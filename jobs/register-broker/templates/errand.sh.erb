@@ -5,13 +5,6 @@ set -u # report the usage of uninitialized variables
 
 PATH=$PATH:/var/vcap/packages/cf-cli/bin:/var/vcap/packages/spruce/bin # add `cf` and `spruce` to PATH
 
-ping -c 20 192.168.3.10
-ping -c 20 seznam.cz
-ping -c 20 cftest.homeatcloud.cz
-curl https://api.cftest.homeatcloud.cz/v2/info -k
-nslookup cftest.homeatcloud.cz 192.168.0.116
-nslookup cftest.homeatcloud.cz
-
 <% if_p('cf.skip_ssl_verification') do %>
 skip_ssl="--skip-ssl-validation "
 <% end %>
@@ -31,5 +24,3 @@ cf login \
 
 cf create-service-broker p-mongo <%= p("broker.security_user_name") %> <%= p("broker.security_user_password") %> "<%= p("broker.host") %>"
 cf enable-service-access p-mongo
-
-sleep 1200
