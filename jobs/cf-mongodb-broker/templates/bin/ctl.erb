@@ -1,0 +1,57 @@
+#!/bin/bash
+<%
+  nodesWithPorts = []
+  p("mongod.nodes.ips").each_with_index do |node, index|
+    nodesWithPorts.push( node + ":#{p("mongod.nodes.port")}" )
+  end
+  nodes_ip = nodesWithPorts.join(",")
+%>
+RUN_DIR=/var/vcap/sys/run/cf-mongodb-broker
+LOG_DIR=/var/vcap/sys/log/cf-mongodb-broker
+PIDFILE=${RUN_DIR}/pid
+
+# Close STDOUT file descriptor
+exec 1<&-
+# Close STDERR FD
+exec 2<&-
+# Open STDOUT as $LOG_FILE file for read and write.
+exec 1<>$LOG_DIR/cf-mongodb-broker.log
+# Redirect STDERR to STDOUT
+exec 2>&1
+
+case $1 in
+
+  start)
+    mkdir -p $RUN_DIR $LOG_DIR
+    chown -R vcap:vcap $RUN_DIR $LOG_DIR
+    sudo apt-get install haveged -y # MOAAR ENTROPY, wow FIXME
+
+    echo $$ > $PIDFILE
+    # test
+    BROKER_ROOT="/var/vcap/packages/cf-mongodb-broker/cf-mongodb-broker"
+    export PATH="${BROKER_ROOT}/jre1.8.0_101/bin/:$PATH"
+    export MONGODB_HOSTSURI=<%= nodes_ip %>
+    export MONGODB_PORT=<%= p("mongod.nodes.port") %>
+    export MONGODB_USERNAME=<%= p("mongod.root.user") %>
+    export MONGODB_PASSWORD=<%= p("mongod.root.pass") %>
+    export SECURITY_USER_NAME=<%= p("broker.security_user_name") %>
+    export SECURITY_USER_PASSWORD=<%= p("broker.security_user_password") %>
+
+    cp /var/vcap/jobs/cf-mongodb-broker/config/catalog.yml /var/vcap/packages/cf-mongodb-broker/cf-mongodb-broker/
+
+    cd ${BROKER_ROOT}
+    exec java -jar cloudfoundry-mongodb-service-broker.jar --server.port=80 \
+    2>> $LOG_DIR/cf-mongodb-broker.log \
+    >> $LOG_DIR/cf-mongodb-broker.log
+    ;;
+
+  stop)
+    kill -9 `cat $PIDFILE`
+    rm -f $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: ctl {start|stop}" ;;
+
+esac

@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
-set -e # exit immediately if a simple command exits with a non-zero status
+#set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 PATH=$PATH:/var/vcap/packages/cf-cli/bin:/var/vcap/packages/spruce/bin # add `cf` and `spruce` to PATH
 
-builtin cd "$(find /var/vcap/data/packages/cf-mongo-broker-dist -type f -name package.json -printf "%h" -quit)"
+ping -c 20 192.168.3.10
+ping -c 20 seznam.cz
+ping -c 20 cftest.homeatcloud.cz
+curl https://api.cftest.homeatcloud.cz/v2/info -k
+nslookup cftest.homeatcloud.cz 192.168.0.116
+nslookup cftest.homeatcloud.cz
 
 <% if_p('cf.skip_ssl_verification') do %>
 skip_ssl="--skip-ssl-validation "
@@ -24,18 +29,7 @@ cf login \
   -a '<%= p('cf.api_endpoint') %>' \
   -u '<%= p('cf.user') %>'
 
-domain=$(cf domains); domain=($domain); domain="${domain[9]}"
+cf create-service-broker p-mongo <%= p("broker.security_user_name") %> <%= p("broker.security_user_password") %> "<%= p("broker.host") %>"
+cf enable-service-access p-mongo
 
-cat > env.yml << EOF
-<%= {'env' => p('mongod'), 'applications' => [{'domain' => 'REPLACE_THIS_DOMAIN'}] }.to_yaml %>
-EOF
-sed -i "0,/REPLACE_THIS_DOMAIN/s//$domain/" env.yml
-
-spruce merge manifest.yml env.yml > new_manifest.yml
->&2 cat new_manifest.yml
-cf push -f new_manifest.yml
-
-# TODO: Figure out `http` vs `https`
-cf create-service-broker mongo-3.2 monguser mongpass "http://cf-mongo-broker.$domain"
-cf enable-service-access mongo-3.2
-cf create-service mongo-3.2 small mongo-broker-db
+sleep 1200

@@ -1,0 +1,24 @@
+---
+name: cf-mongodb-broker
+
+packages:
+    - cf-mongodb-broker
+
+templates:
+    bin/ctl.erb: bin/ctl
+    config/catalog.yml: config/catalog.yml
+
+properties:
+  mongod.nodes.ips:
+    description: MongoDB nodes
+  mongod.nodes.port:
+    description: TCP port on which the MongoDB instance listens for client connections
+    default: 27017
+  mongod.root.user:
+    description: 'MongoDB username'
+  mongod.root.pass:
+    description: 'MongoDB password'
+  broker.security_user_name:
+    description: 'Brokers username'
+  broker.security_user_password:
+    description: 'Brokers password'

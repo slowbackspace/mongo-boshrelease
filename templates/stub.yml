@@ -46,6 +46,16 @@ properties:
     root:
       user: MONGODB_ROOT_USERNAME
       pass: MONGODB_ROOT_PASS
+  broker:
+    security_user_name: BROKER_USERNAME
+    security_user_password: BROKER_PASSWORD
+  cf:
+    api_endpoint: REPLACE
+    skip_ssl_verification: true
+    user: REPLACE
+    password: REPLACE
+    org: REPLACE
+    space: REPLACE
 
 jobs:
   - name: mongod

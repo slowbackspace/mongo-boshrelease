@@ -19,12 +19,22 @@ jobs:
       - name: sm_mongo1
         static_ips: (( static_ips(0,1,2) ))
 
+  - name: mongodb-broker
+    templates:
+    - name: cf-mongodb-broker
+    instances: 1
+    persistent_disk: 0
+    resource_pool: errand_pool
+    networks:
+      - name: sm_mongo1
+        static_ips: (( static_ips(3) ))
+
   - name: replset
     instances: 1
     lifecycle: errand
     networks:
     - name: sm_mongo1
-      static_ips: (( static_ips(3) ))
+      static_ips: (( static_ips(4) ))
     resource_pool: errand_pool
     templates:
     - name: replset
@@ -34,16 +44,16 @@ jobs:
     - name: register-broker
     instances: 1
     lifecycle: errand
-    resource_pool: small_z1
+    resource_pool: errand_pool
     networks:
       - name: sm_mongo1
-        static_ips: (( static_ips(4) ))
+        static_ips: (( static_ips(5) ))
   - name: deregister-broker
     templates:
     - name: deregister-broker
     instances: 1
     lifecycle: errand
-    resource_pool: small_z1
+    resource_pool: errand_pool
     networks:
       - name: sm_mongo1
-        static_ips: (( static_ips(5) ))
+        static_ips: (( static_ips(6) ))

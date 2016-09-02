@@ -1,0 +1,5 @@
+check process cf-mongodb-broker
+  with pidfile /var/vcap/sys/run/cf-mongodb-broker/pid
+  start program "/var/vcap/jobs/cf-mongodb-broker/bin/ctl start"
+  stop program "/var/vcap/jobs/cf-mongodb-broker/bin/ctl stop"
+  group vcap

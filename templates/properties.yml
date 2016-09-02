@@ -18,3 +18,15 @@ properties:
     root:
       user: rootuser
       pass: password
+  broker:
+   security_user_name: admin
+   security_user_password: admin
+   host: (( grab jobs.mongodb-broker.networks[0].static_ips[0] ))
+
+  cf:
+    api_endpoint: (( grab properties.cf.api_endpoint || "api.bosh-lite.com" ))
+    skip_ssl_verification: (( grab properties.cf.skip_ssl_verification || true ))
+    user: (( grab properties.cf.user || "admin" ))
+    password: (( grab properties.cf.password || "admin" ))
+    org: (( grab properties.cf.org || "foo_org" ))
+    space: (( grab properties.cf.space || "foo_space" ))

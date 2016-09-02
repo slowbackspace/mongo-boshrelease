@@ -1,0 +1,35 @@
+broker:
+  id: mongodb-service-broker
+  name: p-mongodb
+  description: MongoDB databases on demand
+  bindable: true
+  plan_updateable: false
+
+  plans:
+  - id: mongo-developer-plan
+    name: developer
+    description: Shared MongoDB Server
+    metadata:
+      bullets:
+      - Shared MongoDB (3.2.9) replica set
+      costs:
+      - amount:
+          usd: 0
+        unit: month
+    free: true
+
+  tags:
+  - mongodb
+
+  metadata:
+    displayName: MongoDB
+    imageUrl: http://info.mongodb.com/rs/mongodb/images/MongoDB_Logo_Full.png
+    longDescription: Creating a service instance provisions a database. Binding
+      applications provisions unique credentials for each application to access
+      the database.
+    providerDisplayName: HomeAtCloud.cz
+    documentationUrl: null
+    supportUrl: null
+
+  requires: null
+  dashboard_client: null

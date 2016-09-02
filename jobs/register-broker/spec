@@ -3,7 +3,6 @@ name: register-broker
 packages:
   - cf-cli
   - spruce
-  - cf-mongo-broker-dist
 templates:
   errand.sh.erb: bin/run
 
@@ -22,32 +21,9 @@ properties:
     description: 'Full URL of Cloud Foundry API'
   cf.user:
     description: 'Name of the Cloud Foundry user'
-  mongod.MONGODB_BINDIP:
-    description: IP address that MongoDB binds to in order to listen for connections
-    default: 0.0.0.0
-  mongod.MONGODB_PORT:
-    description: TCP port on which the MongoDB instance listens for client connections
-    default: 27017
-  mongod.MONGODB_STORAGE_DBPATH:
-    description: The directory where the mongod instance stores its data.
-    default: /var/vcap/store/mongod
-  mongod.MONGODB_SYSTEMLOG:
-    description: Sends all diagnostic logging information to a log file instead of to standard output or to the host’s syslog system
-    default: /var/vcap/sys/log/mongod/mongod.log
-  mongod.MONGODB_REPLSET_NAME:
-    description:  Specify a replica set name as an argument to this set.
-  mongod.MONGODB_REPLSET_KEY:
-    description: Specify key which will be used in keyfile
-  mongod.MONGODB_REPLSET_SECURED:
-    description: Specify if Replica Set will be secured
-    default: false
-  mongod.MONGODB_USER:
-    description: 'MongoDB username'
-  mongod.MONGODB_PASS:
-    description: 'MongoDB password'
-  mongod.MONGODB_DATABASE:
-    description: 'MongoDB database'
-  mongod.MONGODB_HOST:
-    description: 'MongoDB hostname'
-  mongod.MONGODB_URI:
-    description: 'MongoDB URI'
+  broker.security_user_name:
+    description: 'Brokers username'
+  broker.security_user_password:
+    description: 'Brokers password'
+  broker.host:
+    description: 'Full URL of service broker'
