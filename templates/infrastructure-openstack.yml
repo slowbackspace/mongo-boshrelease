@@ -25,7 +25,7 @@ resource_pools:
   - name: small_z1
     cloud_properties:
       name: random
-      instance_type: c1.small
+      instance_type: b1.small
   - name: errand_pool
     cloud_properties:
       name: random
