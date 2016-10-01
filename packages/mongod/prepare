@@ -2,7 +2,7 @@
 set -e
 
 package='mongodb'
-version='ubuntu1404-3.2.9'
+version='ubuntu1404-3.2.10'
 file="$package-linux-x86_64-$version.tgz"
 url="https://fastdl.mongodb.org/linux/$file"
 
