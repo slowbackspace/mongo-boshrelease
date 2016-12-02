@@ -22,3 +22,19 @@ properties:
     description: 'Brokers username'
   broker.security_user_password:
     description: 'Brokers password'
+  broker.id:
+    description: 'Broker id'
+  broker.name:
+    description: 'Broker name'
+  broker.description:
+    description: 'Broker description'
+  broker.bindable:
+    description: 'is service bindable?'
+  broker.plan_updateable:
+    description: 'If plan should be updateable'
+  broker.tags:
+    description: 'Broker tags'
+  broker.plans:
+    description: 'Service plans definitions'
+
+    
